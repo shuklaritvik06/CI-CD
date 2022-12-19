@@ -1,0 +1,36 @@
+# Name of the workflow
+name: Linter
+# Events
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+# Jobs to be executed all jobs are executed on a separate runner parallely
+jobs:
+  lint_code:
+    name: Lint Code
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+      - name: Lint Code
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # Needs specify that the given job is required to be executed
+  publish:
+    needs: lint_code
+    name: Publish
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Deployment start
+        run: echo "Deployment started"
+# This is the simple github action for linting code files

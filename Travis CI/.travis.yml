@@ -1,0 +1,99 @@
+language: node_js
+# OS distro
+os:
+  - linux
+# Ubuntu distro
+dist: trusty
+# Architecture of the environment
+arch: x86_64
+# sudo access
+sudo: true
+# Import any other config to merge
+import:
+  source: "data.yml"
+  mode: merge
+  if: branch = master
+# Compiler to be used
+compiler:
+  - gcc
+# Nodejs version
+node_js:
+  - 18.12.1
+# Scripts to run before caching phase
+before_cache:
+  - echo "Caching phase"
+# Caching strategy
+cache: npm
+# Executed before starting the installation of dependancy
+before_install:
+  - echo "Starting the dependency install"
+# Install the dependancy
+install:
+  - npm ci
+# Commands to be executed before the actual command
+before_script:
+  - echo "Commands to be executed before actual build starts"
+# Commands to be executed
+script:
+  - echo "Commands to be executed"
+# Addons to be activated before the build
+addons:
+  apt:
+    packages:
+      - cmake
+    sources:
+      - ubuntu-toolchain-r-test
+# Git settings
+git:
+  submodules: true
+  clone: true
+  depth: 1
+  quiet: true
+# Scripts to run after the successful build
+after_success:
+  - echo "The build was successful"
+# Scripts to run after the failure
+after_failure:
+  - echo "The build was failed"
+# Before Deployment
+before_deploy:
+  - echo "Deployment"
+# Deployment
+deploy:
+  provider: ...
+  skip_cleanup: true
+  local_dir: build
+  on:
+    branch: master
+# last stage of script phase
+after_script:
+  - echo "Completed script phase"
+# Script to run after the deployment
+after_deploy:
+  - echo "Deployment phase done"
+# Environment Variables
+env:
+  - DB=postgres
+# Notification settings
+notifications:
+  email:
+    recipients:
+      - secure: "ritvikshukla261@gmail.com"
+    on_success: always
+    on_failure: always
+    on_error: always
+    enabled: true
+# Jobs
+jobs:
+  include:
+    - stage: test
+      script: ./test 1
+    - # stage name not required, will continue to use `test`
+      script: ./test 2
+    - stage: deploy
+      script: ./deploy
+# Stages of Build
+stages:
+  - compile
+  - test
+  - deploy

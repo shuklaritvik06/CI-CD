@@ -1,0 +1,40 @@
+pipeline {
+    agent { 
+        node {
+            label 'docker-agent-node'
+            }
+      }
+    triggers {
+        pollSCM '* * * * *'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                echo "Building"
+                sh '''
+                cd app
+                npm install
+                '''
+            }
+        }
+        stage('Test') {
+            steps {
+                echo "Testing"
+                sh '''
+                cd myapp
+                npm run test
+                '''
+            }
+        }
+        stage('Deliver') {
+            steps {
+                echo 'Deployment'
+                sh '''
+                echo "Deployment"
+                '''
+            }
+        }
+    }
+}
+
+// The above Jenkinsfile is a simple pipeline that will run on a docker agent node. It will poll the SCM every minute and run the pipeline. The pipeline has three stages, Build, Test and Deliver. The Build stage will install the requirements for the node application. The Test stage will run the node application test. The Deliver stage will echo a message.

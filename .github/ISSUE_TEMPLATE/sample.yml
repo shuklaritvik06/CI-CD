@@ -1,0 +1,46 @@
+name: Sample name
+description: Sample description
+assignees:
+  - shuklaritvik06
+title: "Sample description"
+labels:
+  - "bug"
+body:
+  - type: markdown
+    attributes:
+      value: Sample code
+  - type: input
+    id: SampleId
+    attributes:
+      label: "bug"
+      description: ""
+      placeholder: ""
+      value: Sample value
+    validations:
+      required: true
+  - type: dropdown
+    id: SampleId
+    attributes:
+      label: Sample label
+      description: Sample description
+      multiple: false
+      options:
+        - "Sample 1"
+    validations:
+      required: true
+  - type: checkboxes
+    attributes:
+      label: Sample label
+      description: Sample description
+      options:
+        - label: Sample label
+          required: true
+    id: SampleId
+  - type: textarea
+    id: SampleId
+    attributes:
+      label: Sample label
+      description: Sample description
+      placeholder: Sample placeholder
+    validations:
+      required: true

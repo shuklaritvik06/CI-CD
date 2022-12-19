@@ -1,0 +1,34 @@
+version: 2.1
+jobs:
+  build:
+    working_directory: /home/ritvik/CI-CD/Circle\ CI
+    docker:
+      - image: "circleci/node:erbium-bullseye-browsers-legacy"
+    steps:
+      - checkout
+      - run:
+          name: Running
+          command: node main.js
+  test:
+    working_directory: ~/project
+    docker:
+      - image: "circleci/node:erbium-bullseye-browsers-legacy"
+    environment:
+      DOCKER_IMAGE: "circleci/node:erbium-bullseye-browsers"
+    steps:
+      - checkout
+      - run:
+          name: Testing
+          shell: /bin/bash
+          command: npm run test
+      - store_test_results:
+          path: /tmp/test_results
+      - store_artifacts:
+          path: /tmp/artifacts
+workflows:
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
